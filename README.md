@@ -1,2 +1,2 @@
-# AI_projects
+# AI projects
 A repo for my AI projects (CS76)
