@@ -4,6 +4,7 @@
 # Class : COSC76
 # Purpose : Create a state space representation of the Chicken and Fox Problem
 
+
 class FoxProblem:
     # represent state in the problem as a triple indicating the number of chicken and foxes on the close shore,
     # as well as the location of the boat as a binary
