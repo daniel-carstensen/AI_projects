@@ -97,11 +97,14 @@ def dfs_search(search_problem, depth_limit=100, node=None, solution=None):
 
 # modified DFS function to only search at specific, increasing depths
 def ids_search(search_problem, depth_limit=100):
-    # run a simple loop to increase the depth until the goals is found or max. depth is reached
+    solution = SearchSolution(search_problem, 'IDS')
 
+    # run a simple loop to increase the depth until the goals is found or max. depth is reached
     for i in range(depth_limit+1):
-        solution = dfs_search(search_problem, depth_limit=i)
-        if len(solution.path) > 0:
+        dfs = dfs_search(search_problem, depth_limit=i)
+        solution.nodes_visited += dfs.nodes_visited
+        if len(dfs.path) > 0:
+            solution.path = dfs.path
             return solution
 
     return solution
