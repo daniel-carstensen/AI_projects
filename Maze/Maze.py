@@ -59,11 +59,8 @@ class Maze:
 
         self.map = list("".join(lines))
 
-
-
     def index(self, x, y):
         return (self.height - y - 1) * self.width + x
-
 
     # returns True if the location is a floor
     def is_floor(self, x, y):
@@ -73,7 +70,6 @@ class Maze:
             return False
 
         return self.map[self.index(x, y)] == "."
-
 
     def has_robot(self, x, y):
         if x < 0 or x >= self.width:
@@ -88,7 +84,6 @@ class Maze:
                 return True
 
         return False
-
 
     # function called only by __str__ that takes the map and the
     #  robot state, and generates a list of characters in order
@@ -107,8 +102,6 @@ class Maze:
             robot_number += 1
 
         return renderlist
-
-
 
     def __str__(self):
 

@@ -1,15 +1,19 @@
 from SearchSolution import SearchSolution
 from heapq import heappush, heappop
 
+
 class AstarNode:
     # each search node except the root has a parent node
     # and all search nodes wrap a state object
 
     def __init__(self, state, heuristic, parent=None, transition_cost=0):
-        # you write this part
+        self.state = state
+        self.heuristic = heuristic
+        self.parent = parent
+        self.transition_cost = transition_cost
 
     def priority(self):
-        # you write this part
+        self.transition_cost + self.heuristic
 
     # comparison operator,
     # needed for heappush and heappop to work with AstarNodes:

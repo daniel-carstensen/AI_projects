@@ -1,3 +1,4 @@
+from Chicken_Foxes import uninformed_search
 from MazeworldProblem import MazeworldProblem
 from Maze import Maze
 
