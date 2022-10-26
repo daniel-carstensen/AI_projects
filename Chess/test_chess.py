@@ -9,14 +9,15 @@ from ChessGame import ChessGame
 import sys
 
 
-player1 = HumanPlayer()
-player2 = RandomAI()
+player1 = MinimaxAI(2)
+player2 = AlphaBetaAI(4)
 
 game = ChessGame(player1, player2)
+# game.board = chess.Board(fen="rn1r2k1/1pq2p1p/p2p1bpB/3P4/P3Q3/2PB4/5PPP/2R1R1K1 w - - 1 2")
 
 while not game.is_game_over():
     print(game)
     game.make_move()
 
 
-#print(hash(str(game.board)))
+print(str(game.board))
