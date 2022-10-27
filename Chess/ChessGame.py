@@ -7,7 +7,6 @@ class ChessGame:
         self.players = [player1, player2]
 
     def make_move(self):
-
         player = self.players[1 - int(self.board.turn)]
         move = player.choose_move(self.board)
 

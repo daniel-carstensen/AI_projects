@@ -10,6 +10,7 @@ from MinimaxAI import MinimaxAI
 from AlphaBetaAI import AlphaBetaAI
 from ChessGame import ChessGame
 from HumanPlayer import HumanPlayer
+from CachedAlphaBetaAI import CachedAlphaBetaAI
 
 import random
 
@@ -61,8 +62,8 @@ if __name__ == "__main__":
     # to do: gui does not work well with HumanPlayer, due to input() use on stdin conflict
     #   with event loop.
 
-    player1 = MinimaxAI(2)
-    player2 = AlphaBetaAI(3)
+    player1 = AlphaBetaAI(6)
+    player2 = CachedAlphaBetaAI(6, 4194304)
 
     game = ChessGame(player1, player2)
     gui = ChessGui(player1, player2)
