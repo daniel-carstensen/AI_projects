@@ -9,5 +9,5 @@ from ConstraintSatisfactionProblem import ConstraintSatisfactionProblem
 
 class CircuitCSP:
 
-    def __init__(self):
+    def __init__(self,):
         pass

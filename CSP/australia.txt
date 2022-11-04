@@ -1,0 +1,7 @@
+Western Australia,Northern Territory,South Australia
+Northern Territory,Western Australia,South Australia,Queensland
+Queensland,Northern Territory,South Australia,New South Wales
+South Australia,Western Australia,Northern Territory,Queensland,New South Wales,Victoria
+New South Wales,South Australia,Queensland,Victoria
+Victoria,South Australia,New South Wales
+Tasmania
