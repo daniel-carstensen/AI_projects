@@ -10,7 +10,7 @@ from ConstraintSatisfactionProblem import ConstraintSatisfactionProblem
 
 class MapColoringCSP(ConstraintSatisfactionProblem):
 
-    def __init__(self, input_str, input_format, domain):
+    def __init__(self, input_str, input_format, domain, mrv=True, lcv=True, ac=True):
         self.domain_dict = {k: domain[k] for k in range(len(domain))}
         self.domain = list(self.domain_dict.keys())
 
@@ -19,7 +19,7 @@ class MapColoringCSP(ConstraintSatisfactionProblem):
 
         self.var_domain = {k: list(self.domain) for k in self.variables}
 
-        super().__init__(self.variables, self.var_domain, self.constraints)
+        super().__init__(self.variables, self.var_domain, self.constraints, mrv, lcv, ac)
 
     def build_map(self, input_str, input_format):
         constraints = defaultdict(lambda: defaultdict(list))
