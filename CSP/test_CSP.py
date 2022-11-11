@@ -5,69 +5,96 @@
 # Purpose :
 
 from MapColoringCSP import MapColoringCSP
+from CircuitCSP import CircuitCSP
 import time
 
 
-adj_tests = []
-node_edge_tests = []
-
-# text = open('australia.txt')
-# australia = text.read()
-# adj_tests.append(australia)
-# text.close()
+text = open('australia.txt')
+australia = text.read()
+text.close()
 
 text = open('us.txt')
 us = text.read()
-adj_tests.append(us)
 text.close()
 
-# text = open('map_1.txt')
-# map_1 = text.read()
-# node_edge_tests.append(map_1)
-# text.close()
-#
-# text = open('map_2.txt')
-# map_2 = text.read()
-# node_edge_tests.append(map_2)
-# text.close()
+text = open('map_1.txt')
+map_1 = text.read()
+text.close()
+
+text = open('map_2.txt')
+map_2 = text.read()
+text.close()
 
 text = open('map_3.txt')
 map_3 = text.read()
-node_edge_tests.append(map_3)
 text.close()
 
-for test_input in adj_tests:
-    start = time.time()
-    test = MapColoringCSP(test_input, 'adj_list', ['r', 'g', 'b', 'd'], False, False, True)
-    # print(test.translate_solution())
-    print(time.time() - start)
+text = open('circuit.txt')
+circuit = text.read()
+text.close()
 
-for test_input in adj_tests:
-    start = time.time()
-    test = MapColoringCSP(test_input, 'adj_list', ['r', 'g', 'b', 'd'], False, True, True)
-    # print(test.translate_solution())
-    print(time.time() - start)
-
-for test_input in adj_tests:
-    start = time.time()
-    test = MapColoringCSP(test_input, 'adj_list', ['r', 'g', 'b', 'd'], True, True, True)
-    # print(test.translate_solution())
-    print(time.time() - start)
-
-# for test_input in node_edge_tests:
-#     start = time.time()
-#     test = MapColoringCSP(test_input, 'adj_list', ['r', 'g', 'b', 'd'], False, False, True)
-#     # print(test.translate_solution())
-#     print(time.time() - start)
+# start = time.time()
+# test = MapColoringCSP(australia, 'adj_list', ['r', 'g', 'b'], False, False, False)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
 #
-# for test_input in node_edge_tests:
-#     start = time.time()
-#     test = MapColoringCSP(test_input, 'adj_list', ['r', 'g', 'b', 'd'], False, True, True)
-#     # print(test.translate_solution())
-#     print(time.time() - start)
+# start = time.time()
+# test = MapColoringCSP(australia, 'adj_list', ['r', 'g', 'b'], True, True, False)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+
+# start = time.time()
+# test = MapColoringCSP(us, 'adj_list', ['r', 'g', 'b', 'd'], False, False, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
 #
-# for test_input in node_edge_tests:
-#     start = time.time()
-#     test = MapColoringCSP(test_input, 'adj_list', ['r', 'g', 'b', 'd'], True, True, True)
-#     # print(test.translate_solution())
-#     print(time.time() - start)
+# start = time.time()
+# test = MapColoringCSP(us, 'adj_list', ['r', 'g', 'b', 'd'], False, True, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+#
+# start = time.time()
+# test = MapColoringCSP(us, 'adj_list', ['r', 'g', 'b', 'd'], True, False, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+#
+# start = time.time()
+# test = MapColoringCSP(us, 'adj_list', ['r', 'g', 'b', 'd'], True, True, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+
+# start = time.time()
+# test = MapColoringCSP(map_3, 'node_edge_list', ['r', 'g', 'b', 'd'], False, False, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+#
+# start = time.time()
+# test = MapColoringCSP(map_3, 'node_edge_list', ['r', 'g', 'b', 'd'], False, True, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+#
+# start = time.time()
+# test = MapColoringCSP(map_3, 'node_edge_list', ['r', 'g', 'b', 'd'], True, False, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+#
+# start = time.time()
+# test = MapColoringCSP(map_3, 'node_edge_list', ['r', 'g', 'b', 'd'], True, True, True)
+# test.translate_solution()
+# # print(test.translate_solution())
+# print(time.time() - start)
+
+start = time.time()
+test = CircuitCSP(circuit, 'dimensions', (3, 10), True, True, True)
+test.translate_solution()
+print(test.translate_solution())
+print(time.time() - start)

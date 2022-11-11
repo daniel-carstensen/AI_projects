@@ -30,18 +30,25 @@ class ConstraintSatisfactionProblem:
     def get_domain(self, var):
         return self.var_domain[var]
 
-    def get_solution(self):
-        return self.backtrack()
+    def get_next_var(self):
+        if self.mrv:
+            return self.get_next_mrv_var()
+
+        for i, var in enumerate(self.assignment):
+            if var == -1:
+                return i
 
     def get_next_mrv_var(self):
         mrv = math.inf
         mrv_var = -1
         for i, var in enumerate(self.assignment):
             if var == -1:
+                if mrv_var == -1:
+                    mrv_var = i
                 vals = self.get_domain(i)
                 num_vals = 0
                 for val in vals:
-                    if self.is_consistent(var, val):
+                    if self.is_consistent(i, val):
                         num_vals += 1
                 if num_vals < mrv:
                     mrv_var = i
@@ -52,29 +59,19 @@ class ConstraintSatisfactionProblem:
 
         return mrv_var
 
-    def get_next_var(self):
-        if self.mrv:
-            return self.get_next_mrv_var()
-
-        for i, var in enumerate(self.assignment):
-            if var == -1:
-                return i
-
     def get_lcv_order(self, var, vals):
         lcv_vals = []
         for val in vals:
-            self.assignment[var] = val
             num_possibilities = 0
             for neighbor in self.constraints[var].keys():
-                if self.assignment[neighbor] != -1:
+                if self.assignment[neighbor] == -1:
                     neighbor_vals = self.get_domain(neighbor)
                     for n_val in neighbor_vals:
-                        if self.is_consistent(neighbor, n_val):
+                        if n_val != val:
                             num_possibilities += 1
             lcv_vals.append((num_possibilities, val))
-            self.assignment[var] = -1
 
-        lcv_vals.sort(reverse=True)
+        lcv_vals.sort(reverse=True, key = lambda x: x[0])
         ordered_vals = [lcv_vals[i][1] for i in range(len(lcv_vals))]
 
         return ordered_vals
@@ -129,7 +126,10 @@ class ConstraintSatisfactionProblem:
         for val in vals:
             if self.is_consistent(var, val):
                 self.assignment[var] = val
-                if self.ac is False or self.ac_3():
+                arc_consistent = True
+                if self.ac:
+                    arc_consistent = self.ac_3()
+                if arc_consistent:
                     result = self.backtrack()
                     if len(result) != 0:
                         return result
@@ -137,10 +137,5 @@ class ConstraintSatisfactionProblem:
 
         return []
 
-
-
-
-
-
-
-
+    def get_solution(self):
+        return self.backtrack()
