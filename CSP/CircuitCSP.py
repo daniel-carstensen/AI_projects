@@ -1,31 +1,41 @@
 # Author : Daniel Carstensen
-# Date : 11/xx/2022
+# Date : 11/12/2022
 # File name : CircuitCSP.py
 # Class : COSC76
-# Purpose :
+# Purpose : Extension of general CSP class to solve circuit layout problem
 
 from collections import defaultdict
 from ConstraintSatisfactionProblem import ConstraintSatisfactionProblem
 
 
 class CircuitCSP(ConstraintSatisfactionProblem):
-    # shapes: index on bottom left corner
-    # domain:
-    # constraint: every corner, check if point is in other piece (for both pieces)
+
+    # domain: size of the circuit board (general domain)
+    # create variable_dict, domain_dict, and constraints with build_map method
+    # variable_dict: dictionary that assigns each variable a number
+    # domain_dict: dictionary that assigns each variable a list of possible values
+    # constraints: binary constraints for each pair of variables
+    # mrv, lcv, ac: toggle minimum remaining values and least constraining value heuristics, and arc consistency
     def __init__(self, input_str, input_format, domain, mrv, lcv, ac):
         self.domain = domain
-        self.variable_dict, self.domain_dict, self.constraints = self.build_map(input_str, input_format, self.domain)
+        self.variable_dict, self.domain_dict, self.constraints = self.build_map(input_str, input_format)
         self.variables = list(self.variable_dict.keys())
-        self.var_domain = {k: list(self.domain_dict.get(k)) for k in self.variables}
-        super().__init__(self.variables, self.var_domain, self.constraints, mrv, lcv, ac)
+        super().__init__(self.variables, self.domain_dict, self.constraints, mrv, lcv, ac)  # init of parent class
 
-    def build_map(self, input_str, input_format, domain):
+    # input_str: input as text
+    # input_format: format of input
+    # build variable dictionary and constraints
+    def build_map(self, input_str, input_format):
+
+        # helper method to check if two components overlap
+        # bl_: bottom lower corner
+        # tr_: top right corner
         def check_overlap(k_corners, l_corners):
             bl_k = k_corners[0]
-            tr_k = k_corners[3]
+            tr_k = k_corners[1]
 
             bl_l = l_corners[0]
-            tr_l = l_corners[3]
+            tr_l = l_corners[1]
 
             return (tr_k[0] <= bl_l[0] or bl_k[0] >= tr_l[0] or tr_k[1] <= bl_l[1] or bl_k[1] >= tr_l[1]) is False
 
@@ -33,17 +43,23 @@ class CircuitCSP(ConstraintSatisfactionProblem):
             domain_dict = defaultdict(list)
             constraints = defaultdict(lambda: defaultdict(list))
 
+            # each line contains dimensions of one components
             component_dim = input_str.split('\n')
 
+            # create dictionary assigning each component dimensions as tuple (length, height) to a number
             variable_dict = {k: tuple([int(i) for i in component_dim[k].split(',')]) for k in range(len(component_dim))}
 
+            # create domain for each component by check if specific location of bottom left corner contains entire
+            # component within the board domain
             for k in variable_dict.keys():
                 curr_comp = variable_dict.get(k)
-                for length in range(domain[0]):
-                    for height in range(domain[1]):
-                        if curr_comp[0] + length <= domain[0] and curr_comp[1] + height <= domain[1]:
+                for length in range(self.domain[0]):
+                    for height in range(self.domain[1]):
+                        if curr_comp[0] + length <= self.domain[0] and curr_comp[1] + height <= self.domain[1]:
                             domain_dict[k].append((length, height))
 
+            # create binary constraints by checking for each pair of components and all possible locations of each
+            # component if components overlap
             for k in variable_dict.keys():
                 for l in variable_dict.keys():
                     if k != l:
@@ -51,11 +67,9 @@ class CircuitCSP(ConstraintSatisfactionProblem):
                         l_dim = variable_dict.get(l)
                         for k_coords in domain_dict.get(k):
                             for l_coords in domain_dict.get(l):
-                                k_corners = [k_coords, (k_dim[0]+k_coords[0], k_coords[1]),
-                                             (k_coords[0], k_dim[1]+k_coords[1]), (k_dim[0]+k_coords[0], k_dim[1]+k_coords[1])]
-                                l_corners = [l_coords, (l_dim[0] + l_coords[0], l_coords[1]),
-                                             (l_coords[0], l_dim[1] + l_coords[1]),
-                                             (l_dim[0] + l_coords[0], l_dim[1] + l_coords[1])]
+                                # bottom left and top right corner coordinates
+                                k_corners = [k_coords, (k_dim[0]+k_coords[0], k_dim[1]+k_coords[1])]
+                                l_corners = [l_coords, (l_dim[0] + l_coords[0], l_dim[1] + l_coords[1])]
                                 overlap = False
                                 if check_overlap(k_corners, l_corners):
                                     overlap = True
@@ -66,6 +80,7 @@ class CircuitCSP(ConstraintSatisfactionProblem):
 
         return variable_dict, domain_dict, constraints
 
+    # get solution and retranslate assignment to original variables and inputs
     def translate_solution(self):
         solution = self.get_solution()
 
@@ -79,6 +94,7 @@ class CircuitCSP(ConstraintSatisfactionProblem):
 
         return output
 
+    # get solution and print the location of each component in solution in the board
     def print_solution(self):
         solution = self.get_solution()
         solution_circuit = []
@@ -92,8 +108,6 @@ class CircuitCSP(ConstraintSatisfactionProblem):
                     bl_y = solution[k][1]
                     tr_x = self.variable_dict.get(k)[0] + solution[k][0]
                     tr_y = self.variable_dict.get(k)[1] + solution[k][1]
-                    # print((i,j))
-                    # print(((bl_x, bl_y), (tr_x, tr_y)))
                     if i < tr_y and i >= bl_y and  j < tr_x and j >= bl_x:
                         solution_row += str(k)
                         comp = True

@@ -1,8 +1,8 @@
 # Author : Daniel Carstensen
-# Date : 11/xx/2022
+# Date : 11/12/2022
 # File name : test_CSP.py
 # Class : COSC76
-# Purpose :
+# Purpose : test MapColoringCSP and CircuitCSP for various inputs
 
 from MapColoringCSP import MapColoringCSP
 from CircuitCSP import CircuitCSP
@@ -33,12 +33,17 @@ text = open('circuit.txt')
 circuit = text.read()
 text.close()
 
+# maps: australia, us, map_1, map_2, map_3
+# use CSP with various configurations of heuristics
+
+# australia
 start = time.time()
 test = MapColoringCSP(australia, 'adj_list', ['r', 'g', 'b'], False, False, False)
 test.translate_solution()
 print(test.translate_solution())
 print(time.time() - start)
 
+# us
 start = time.time()
 test = MapColoringCSP(us, 'adj_list', ['r', 'g', 'b', 'd'], False, False, True)
 test.translate_solution()
@@ -63,18 +68,22 @@ test.translate_solution()
 # print(test.translate_solution())
 print(time.time() - start)
 
+
+# map 1
 start = time.time()
 test = MapColoringCSP(map_1, 'node_edge_list', ['r', 'g', 'b', 'd'], False, False, True)
 test.translate_solution()
 print(test.translate_solution())
 print(time.time() - start)
 
+# map 2
 start = time.time()
 test = MapColoringCSP(map_2, 'node_edge_list', ['r', 'g', 'b', 'd'], False, False, True)
 test.translate_solution()
 print(test.translate_solution())
 print(time.time() - start)
 
+# map 3
 start = time.time()
 test = MapColoringCSP(map_3, 'node_edge_list', ['r', 'g', 'b', 'd'], False, False, True)
 test.translate_solution()
@@ -99,6 +108,8 @@ test.translate_solution()
 # print(test.translate_solution())
 print(time.time() - start)
 
+
+# circuit
 start = time.time()
 test = CircuitCSP(circuit, 'dimensions', (10, 3), True, True, True)
 print(test.translate_solution())
